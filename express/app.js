@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
 const loggerMiddleware = require('./middleware/logger');
-
+const exphbs = require('express-handlebars');
 const app = express();
+const members = require('./members');
 
 
 
@@ -14,8 +15,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
+//handlebars middleware
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+
+
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname,'public', 'index.html'));
+  res.render('index.handlebars', {title: 'Member App', members});
+  //res.sendFile(path.join(__dirname,'public', 'index.html'));
 
 });
 

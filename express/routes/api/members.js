@@ -14,6 +14,7 @@ router.get('/', function(req, res) {
 router.get('/:id', function(req, res) {
   const found = members.some(function(member) {
     return member.id === parseInt(req.params.id)});
+
     if (found) {
       res.json(members.filter(function(member) {
         return member.id === parseInt(req.params.id)}));
@@ -39,7 +40,43 @@ router.post('/', function(req, res) {
 });
 
 //update member
+router.put('/:id', function(req, res) {
+  const found = members.some(function(member) {
+    return member.id === parseInt(req.params.id)});
 
+    if (found) {
+      const updMember = req.body;
+        members.forEach(function(member) {
+          if(member.id === parseInt(req.params.id)) {
+            member.name = updMember.name ? updMember.name: member.name;
+            member.email = updMember.email ? updMember.email: member.email;
+
+            res.json({msg: "Member Updated", member });
+          }
+        });
+      /*res.json(members.filter(function(member) {
+        return member.id === parseInt(req.params.id)})); */
+    } else {
+      res.status(400).json({msg: `No member with the id ${req.params.id}`})
+    };
+});
+
+//delete /member
+router.delete('/:id', function(req, res) {
+  const found = members.some(function(member) {
+    return member.id === parseInt(req.params.id)});
+
+if (found) {
+  res.json({
+    msg: 'Member Deleted', members: members.filter(function(member) {
+       return member.id !== parseInt(req.params.id)
+    })
+  });
+} else {
+  res.status(400).json({message: `No member with the id of ${req.params.id}`});
+}
+
+});
 
 
 
